@@ -1,2 +1,10 @@
 ---
-# handlers file for virtiofs
+- name: Stop VM
+  community.general.proxmox_kvm:
+    api_host: "{{ node.hostname }}"
+    api_user: "{{ api_user }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    vmid: "{{ guest.id }}"
+    state: restarted
+  when: inventory_hostname == node.host

@@ -21,16 +21,8 @@
     regexp: '^args:'
     line: "args: -chardev socket,id=char0,path={{ socket }} -device vhost-user-fs-pci,chardev=char0,tag={{ share_name }} -object memory-backend-memfd,id=mem,size={{ guest.mem_size }},share=on -numa node,memdev=mem"
   when: inventory_hostname == node.host
-
-- name: Restart VM
-  community.general.proxmox_kvm:
-    api_host: "{{ node.hostname }}"
-    api_user: "{{ api_user }}"
-    api_token_id: "{{ api_token_id }}"
-    api_token_secret: "{{ api_token_secret }}"
-    vmid: "{{ guest.id }}"
-    state: started
-  when: inventory_hostname == node.host
+  notify:
+    - Restart VM
 
 # VM/Guest setup
 - name: Create mount point
