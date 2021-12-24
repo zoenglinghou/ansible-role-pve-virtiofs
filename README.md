@@ -41,7 +41,7 @@ Example Playbook
 ```yaml
 - hosts: pve_node, pve_guest
   roles:
-  - name: zoenglinghou.pve-virtiofs
+  - name: zoenglinghou.pve_virtiofs
     vars:
       share_name: pve_share
       socket: /var/run/vm101-vhost-fs.sock
