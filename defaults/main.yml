@@ -1,0 +1,17 @@
+---
+share_name: virtiofs
+socket: /var/run/vm101-vhost-fs.sock
+node:
+  host: proxmox
+  hostname: proxmox
+  share_dir: /mnt/data
+guest:
+  host: guest
+  hostname: guest
+  id: 101
+  mount_point: /mnt/share
+  mem_size: 2G
+api_user: root
+api_password: api_password
+api_token_id: api_token_id
+api_token_secret: api_token_secret

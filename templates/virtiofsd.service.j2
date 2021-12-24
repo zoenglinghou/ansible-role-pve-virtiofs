@@ -1,0 +1,10 @@
+[Unit]
+Description=Start virtiofsd for {{ share_name }}
+Documentation=man:virtiofsd(1)
+
+[Service]
+Type=simple
+ExecStart=/usr/lib/kvm/virtiofsd -f --socket-path={{ socket }} -o source={{ node.share_dir }} -o cache=always
+
+[Install]
+WantedBy={{ guest.id }}.scope

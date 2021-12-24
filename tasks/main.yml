@@ -1,0 +1,50 @@
+---
+# Node/Host setup
+- name: Setup virtiofsd-{{ share_name }} service
+  template:
+    src: virtiofsd.service.j2
+    dest: /etc/systemd/system/virtiofsd-{{ share_name }}.service
+    mode: 0644
+  when: inventory_hostname == node.host
+
+- name: Start virtiofsd-{{ share_name }} service
+  systemd:
+    name: virtiofsd-{{ share_name }}.service
+    daemon-reload: yes
+    enabled: yes
+    state: started
+  when: inventory_hostname == node.host
+
+- name: Modify VM args
+  lineinfile:
+    path: /etc/pve/nodes/{{ node.hostname }}/qemu-server/{{ guest.id }}.conf
+    regexp: '^args:'
+    line: "args: -chardev socket,id=char0,path={{ socket }} -device vhost-user-fs-pci,chardev=char0,tag={{ share_name }} -object memory-backend-memfd,id=mem,size={{ guest.mem_size }},share=on -numa node,memdev=mem"
+  when: inventory_hostname == node.host
+
+- name: Restart VM
+  community.general.proxmox_kvm:
+    api_host: "{{ node.hostname }}"
+    api_user: "{{ api_user }}"
+    api_token_id: "{{ api_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    vmid: "{{ guest.id }}"
+    state: started
+  when: inventory_hostname == node.host
+
+# VM/Guest setup
+- name: Create mount point
+  file:
+    path: "{{ guest.mount_point }}"
+    state: directory
+  when: inventory_hostname == guest.host
+
+- name: Mount said device
+  ansible.posix.mount:
+    backup: yes
+    boot: yes
+    fstype: virtiofs
+    path: "{{ guest.mount_point }}"
+    src: "{{ share_name }}"
+    state: mounted
+  when: inventory_hostname == guest.host
