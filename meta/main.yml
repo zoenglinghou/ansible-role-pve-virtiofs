@@ -1,7 +1,7 @@
 galaxy_info:
   role_name: pve_virtiofs
   author: zoelinghou
-  description: pve-virtiofs configures virtiofs shares between Proxmox PVE host and guests
+  description: pve_virtiofs configures virtiofs shares between Proxmox PVE host and guests
 
   license: GPL-3.0-only
 

@@ -1,25 +1,26 @@
-pve-virtiofs
+pve_virtiofs
 =========
 
 Setup `virtiofs` shares between Proxmox PVE host and guest VM.
 
-⚠️Note: Due to this [limitation](https://github.com/ansible-collections/community.general/issues/1641), `args` for the VM are not set using `community.general.proxmox_kvm`, but with `ansible.builtin.lineinfile`. This could erase your previous `args`. **Proceed at your own discretion**.
+⚠️ Note: Due to this [limitation](https://github.com/ansible-collections/community.general/issues/1641), `args` for the VM are not set using `community.general.proxmox_kvm`, but with `ansible.builtin.lineinfile`. This could erase your previous `args`. **Proceed at your own discretion**.
 
 Inspired by [yaro014 on Proxmox Forum](https://forum.proxmox.com/threads/virtiofs-support.77889/) and [Arch Wiki's `QEMU` Entry](https://wiki.archlinux.org/title/QEMU#Host_file_sharing_with_virtiofsd).
 
 Requirements
 ------------
 
-- `community.general` collection
+- `community.general.proxmox_kvm` collection
 - `ansible.posix` collection
+- `proxmoxer` Python module on PVE host
 
 Role Variables
 --------------
 
-⚠️Note: A lot of defaults **NEED** to be changed.
+⚠️ Note: A lot of defaults **NEED** to be changed.
 
 - `share_name`: Name of the `virtiofs` share. Default: `virtiofs`
-- `socket`: vhost-user UNIX domain socket `virtiofs` listens on. Default: `/var/run/vm101-vhost-fs.sock`
+- `socket`: `vhost-user UNIX domain socket `virtiofs` listens on. Default: `/var/run/vm101-vhost-fs.sock`
 - `node`
   - `host`: Ansible host corresponding to the Proxmox host machine. Default: `proxmox`
   - `hostname`: Hostname of the Proxmox system. Default: `proxmox`
@@ -32,7 +33,7 @@ Role Variables
   - `mem_size`: Memory allotted to the VM. Default: `2G`
 - `api_user`: Username to login Proxmox. Default: `root`
 - `api_password`: Password for the corresponding Proxmox user. Default: `api_password`
-- `api_token_id`: Token ID to login Proxmox. Default: `api_token_id`
+- `api_token_id`: Token ID to log into Proxmox. Default: `api_token_id`
 - `api_token_secret`: Token Secret for the corresponding Token. Default: `api_token_secret`
 
 Example Playbook
