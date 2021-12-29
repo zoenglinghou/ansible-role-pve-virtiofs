@@ -5,6 +5,8 @@ galaxy_info:
 
   license: GPL-3.0-only
 
+  issue_tracker_url: https://codeberg.org/zoenglinghou/ansible-role-pve-virtiofs/issues
+
   min_ansible_version: 2.9
 
   galaxy_tags:
