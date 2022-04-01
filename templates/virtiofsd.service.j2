@@ -1,5 +1,6 @@
 [Unit]
 Description=Start virtiofsd for {{ share_name }}
+Before={{ guest.id }}.scope
 Documentation=man:virtiofsd(1)
 
 [Service]
